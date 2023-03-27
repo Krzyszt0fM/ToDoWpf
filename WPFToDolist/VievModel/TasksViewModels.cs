@@ -8,17 +8,15 @@ namespace WPFToDolist.VievModel
 
     public class TasksViewModels
     {
-        public Calendar model;
-        public ObservableCollection<TaskModel> TasksList { get; } = new ObservableCollection<TaskModel>();
+        public ToDoLogic.Model.Calendar model;
+        public ObservableCollection<TaskViewModel> TasksList { get; } = new ObservableCollection<TaskViewModel>();
         private void CopyTasksFromModel()
         {
-
-
             TasksList.CollectionChanged -= ModelSync;
             TasksList.Clear();
             foreach(TaskModel taskModel in model)
             {
-                TasksList.Add(new TaskModel(taskModel));
+                TasksList.Add(new TaskViewModel(taskModel));
             }
             TasksList.CollectionChanged += ModelSync;
         }
@@ -58,5 +56,7 @@ namespace WPFToDolist.VievModel
                     break;
             }
         }
+
+
     }
 }

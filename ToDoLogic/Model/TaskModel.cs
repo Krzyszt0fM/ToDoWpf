@@ -38,7 +38,7 @@
 
         public override string ToString()
         {
-            return Duty + ", task id: " + ID.ToString() + ", Date: " + Date.ToString() + ", priority: " + Priority + ", is task done: " + (IsDone ? "done" : "undone");
+            return ID.ToString() + Duty + ", Date: " + Date.ToString() + ", priority: " + Priority + ", is task done: " + (IsDone ? "done" : "undone");
         }
     }
 }

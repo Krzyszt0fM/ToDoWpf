@@ -6,24 +6,24 @@ namespace ConsoleToDos
 
     public static class FileWr
     {
-        public static void Serialize()
+        public static void Serialize(this TaskModel model)
         {
-            List<TaskModel> tasks = new List<TaskModel>(); ;
+            List<TaskModel> taskList = new List<TaskModel>();
             DeserializeTasks();
-            string json = JsonConvert.SerializeObject(tasks);
+            string json = JsonConvert.SerializeObject(taskList);
             File.WriteAllText(@"taskList.json" , json);
 
         }
 
         public static List<TaskModel> DeserializeTasks()
         {
-            List<TaskModel> tasks = new List<TaskModel>();
+            List<TaskModel> taskList = new List<TaskModel>();
             if(File.Exists(@"taskList.json"))
             {
                 string json = File.ReadAllText(@"taskList.json");
-                tasks = JsonConvert.DeserializeObject<List<TaskModel>>(json);
+                taskList = JsonConvert.DeserializeObject<List<TaskModel>>(json);
             }
-            return tasks;
+            return taskList;
         }
 
     }

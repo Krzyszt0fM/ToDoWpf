@@ -4,7 +4,7 @@ using ToDoLogic.Model;
 
 namespace WPFToDolist.VievModel
 {
-    public class TaskViewModel : ObserveObj
+    public class TaskViewModel : ObservedObj
     {
         public TaskModel model;
 
@@ -82,7 +82,7 @@ namespace WPFToDolist.VievModel
             }
         }
 
-        private readonly ICommand markAsUnDone;
+        private ICommand markAsUnDone;
 
         public ICommand MarkAsUnDone
         {

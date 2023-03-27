@@ -16,6 +16,27 @@
     <Window.DataContext>
         <mw:TasksViewModels/>
     </Window.DataContext>
+    <Window.Resources>
+        <Style x:Key="buttonStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="top"/>
+            <Setter Property="Background" Value="{StaticResource ButtonMnz1}"/>
+            <Setter Property="Foreground" Value="DarkGray"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ButtonMnz1}"/>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="10"/>
+                </Style>            
+            </Style.Resources>
+            
+        </Style>
+
+        <BooleanToVisibilityConverter x:Key="bollToVisibility"/>
+    </Window.Resources>
 
     <Border CornerRadius="50">
         <Border.Background>
@@ -182,7 +203,24 @@
                             ItemsSource="{Binding Path=TasksList}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    
+                                    <StackPanel
+                                        Orientation="Vertical" 
+                                        Margin="3">
+                                        <StackPanel
+                                            Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Path=Duty, Mode=OneWay}"
+                                                       FontSize="20"/>
+                                            <Button Content="Done" Command="{Binding Path=MarkAsDone}"
+                                                    Style="{StaticResource buttonStyle}"
+                                                    Visibility="{Binding RelativeSource={RelativeSource Self},
+                                                    Path=IsEnabled,Mode=TwoWay, Converter={StaticResource bollToVisibility}}"
+                                                    />
+                                            <Button Content="Undone" Command="{Binding Path=MarkAsUnDone}"
+                                                    Style="{StaticResource buttonStyle}"
+                                                    Visibility="{Binding RelativeSource={RelativeSource Self},
+                                                    Path=IsEnabled,Mode=TwoWay, Converter={StaticResource bollToVisibility}}"/>
+                                        </StackPanel>
+                                    </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                             

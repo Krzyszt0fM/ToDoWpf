@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-public abstract class ObserveObj : INotifyPropertyChanged
+public abstract class ObservedObj : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
 

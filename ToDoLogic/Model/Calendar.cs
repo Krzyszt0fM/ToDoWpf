@@ -5,12 +5,12 @@ namespace ToDoLogic.Model
     public class Calendar : IEnumerable<TaskModel>
     {
         public List<TaskModel> taskList = new List<TaskModel>();
-        //public Calendar model;
+        public Calendar model;
 
-        //public Calendar(Calendar model)
-        //{
-        //    this.model = model;
-        //}
+        public Calendar(Calendar model)
+        {
+            this.model = model;
+        }
 
         //crud
         public void AddTask(TaskModel model)

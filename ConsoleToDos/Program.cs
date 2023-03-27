@@ -135,7 +135,7 @@ class Program
 
                 }
             }
-            FileWr.Serialize();
+            //FileWr.Serialize();
         }
     }
 }
