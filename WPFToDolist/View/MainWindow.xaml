@@ -15,36 +15,52 @@
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen">
     <Window.DataContext>
-        <mw:TasksViewModels/>
+        <mw:TasksViewModels />
     </Window.DataContext>
     <Window.Resources>
-        <Style x:Key="buttonStyle" TargetType="Button">
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontFamily" Value="Monserat"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Width" Value="90"/>
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="VerticalAlignment" Value="top"/>
-            <Setter Property="Background" Value="{StaticResource ButtonMnz1}"/>
-            <Setter Property="Foreground" Value="DarkGray"/>
-            <Setter Property="BorderBrush" Value="{StaticResource ButtonMnz1}"/>
+        <Style x:Key="buttonStyle"
+               TargetType="Button">
+            <Setter Property="FontSize"
+                    Value="16" />
+            <Setter Property="FontFamily"
+                    Value="Monserat" />
+            <Setter Property="Margin"
+                    Value="5" />
+            <Setter Property="Width"
+                    Value="90" />
+            <Setter Property="Height"
+                    Value="30" />
+            <Setter Property="HorizontalAlignment"
+                    Value="Right" />
+            <Setter Property="VerticalAlignment"
+                    Value="top" />
+            <Setter Property="Background"
+                    Value="{StaticResource ButtonMnz1}" />
+            <Setter Property="Foreground"
+                    Value="DarkGray" />
+            <Setter Property="BorderBrush"
+                    Value="{StaticResource ButtonMnz1}" />
             <Style.Resources>
                 <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="10"/>
-                    <Setter Property="BorderBrush" Value="BlanchedAlmond"/>
-                    <Setter Property="BorderThickness" Value="5"/>
+                    <Setter Property="CornerRadius"
+                            Value="10" />
+                    <Setter Property="BorderBrush"
+                            Value="BlanchedAlmond" />
+                    <Setter Property="BorderThickness"
+                            Value="5" />
                     <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{StaticResource ButtonMnz2}"/>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    Value="{StaticResource ButtonMnz2}" />
                         </Trigger>
                     </Style.Triggers>
                 </Style>
             </Style.Resources>
         </Style>
-        <BooleanToVisibilityConverter x:Key="bollToVisibility"/>
-        <local:Converters x:Key="isDoneToBrush"/>
-        <local:TaskConverter x:Key="makeTask"/>
+        <BooleanToVisibilityConverter x:Key="bollToVisibility" />
+        <local:Converters x:Key="isDoneToBrush" />
+        <local:TaskConverter x:Key="makeTask" />
     </Window.Resources>
 
     <Border CornerRadius="50">
@@ -52,7 +68,7 @@
             <ImageBrush ImageSource="/Images/tlo.png" />
         </Border.Background>
         <Border CornerRadius="20"
-                BorderThickness="2.5"
+                BorderThickness="3,3,3,3"
                 Opacity="0.95">
             <Border.BorderBrush>
                 <LinearGradientBrush StartPoint="0,0"
@@ -174,11 +190,11 @@
                     </Grid>
                 </Grid>
                 <Border CornerRadius="20"
-                        BorderThickness="5.5"
+                        BorderThickness="3,3,3,3"
                         Opacity="0.95"
-                        HorizontalAlignment="Right"
+                        HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Margin="0,0,10,0">
+                        Height="650">
                     <Border.BorderBrush>
                         <LinearGradientBrush StartPoint="0,0"
                                              EndPoint="1,1">
@@ -193,42 +209,44 @@
                     <StackPanel Name="stackPanel1"
                                 Width="990"
                                 Height="550">
-
                         <TextBlock Text="Your task:"
                                    Foreground="DarkGray"
                                    FontSize="22"
                                    FontWeight="Medium"
                                    FontFamily="Montserrat"
-                                   Margin="10,10,0,2">
-                            <Run Text="{Binding Path=TasksList.Count, Mode=OneWay}"/>
-                        </TextBlock>
-                        <ListBox
-                            x:Name="TaskList"
-                            Margin="10,35,10,200"
-                            Background="Transparent"
-                            Foreground="DarkGray"
-                            FontSize="18"
-                            FontFamily="Monserat"
-                            ItemsSource="{Binding Path=TasksList}" Height="250">
+                                   Width="965"><Run Text="{Binding TasksList.Count, Mode=OneWay}" /></TextBlock>
+                        <ListBox x:Name="TaskList"
+                                 Margin="10,35,10,200"
+                                 Background="Transparent"
+                                 Foreground="DarkGray"
+                                 FontSize="18"
+                                 FontFamily="Monserat"
+                                 ItemsSource="{Binding TasksList}"
+                                 Height="250"
+                                 SelectionChanged="TaskList_SelectionChanged">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel
-                                        Orientation="Vertical" 
-                                        Margin="3">
-                                        <StackPanel
-                                            Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Path=Duty, Mode=OneWay}"
-                                                       FontSize="20"/>
+                                    <StackPanel Orientation="Vertical"
+                                                Margin="3">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Duty, Mode=OneWay}"
+                                                       FontSize="20"
+                                                       Margin="5,5,5,5" />
+                                            <TextBlock Text="{Binding Date, Mode=OneWay}"
+                                                       FontSize="20"
+                                                       Margin="5,5,5,5" />
+                                            <TextBlock Text="{Binding Priority, Mode=OneWay}"
+                                                       FontSize="20"
+                                                       Margin="5,5,5,5" />
 
-                                            <Button Content="Done" Command="{Binding Path=MarkAsDone}"
+                                            <Button Content="Done"
+                                                    Command="{Binding MarkAsDone}"
                                                     Style="{StaticResource buttonStyle}"
-                                                    Visibility="{Binding RelativeSource={RelativeSource Self},
-                                                    Path=IsEnabled,Mode=OneWay, Converter={StaticResource bollToVisibility}}"
-                                                    />
-                                            <Button Content="Undone" Command="{Binding Path=MarkAsUnDone}"
+                                                    Visibility="{Binding IsEnabled, Converter={StaticResource bollToVisibility}, Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+                                            <Button Content="Undone"
+                                                    Command="{Binding MarkAsUnDone}"
                                                     Style="{StaticResource buttonStyle}"
-                                                    Visibility="{Binding RelativeSource={RelativeSource Self},
-                                                    Path=IsEnabled,Mode=OneWay, Converter={StaticResource bollToVisibility}}"/>
+                                                    Visibility="{Binding IsEnabled, Converter={StaticResource bollToVisibility}, Mode=OneWay, RelativeSource={RelativeSource Self}}" />
                                         </StackPanel>
                                     </StackPanel>
                                 </DataTemplate>
@@ -257,46 +275,53 @@
                     </StackPanel>
                 </Border>
                 <Button Content="Delete Task"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Margin="25,4,3,265"
-                                Style="{StaticResource buttonStyle}"
-                                FontSize="18"
-                                FontWeight="Medium"
-                                Width="100"
-                                Height="35"
-                                Background="{StaticResource ButtonMnz1}"
-                                Command="{Binding DeleteTask}"
-                                CommandParameter="{Binding ElementName=TaskList, Path=SelectedIndex}">
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Margin="878,0,0,160"
+                        Style="{StaticResource buttonStyle}"
+                        FontSize="18"
+                        FontWeight="Medium"
+                        Width="100"
+                        Height="35"
+                        Background="{StaticResource ButtonMnz1}"
+                        Command="{Binding DeleteTask}"
+                        CommandParameter="{Binding ElementName=TaskList, Path=SelectedIndex}">
 
                 </Button>
-                <GroupBox
-                    Header="New Task"
-                    FontSize="16"
-                    FontWeight="Medium"
-                    Foreground="DarkGray"
-                    Margin="25,467,25,0"
-                    MinWidth="220"
-                    MinHeight="100"
-                    VerticalAlignment="Top" Height="153">
+                <GroupBox Header="New Task"
+                          FontSize="16"
+                          FontWeight="Medium"
+                          Foreground="DarkGray"
+                          Margin="25,439,25,0"
+                          MinWidth="220"
+                          MinHeight="100"
+                          VerticalAlignment="Top"
+                          Height="152">
+                    
                     <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="359*" />
+                            <ColumnDefinition Width="599*" />
+                        </Grid.ColumnDefinitions>
                         <Label Content="Description:"
-                              Margin="10,13,0,0"
+                               Margin="10,13,0,0"
                                Foreground="DarkGray"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"/>
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top" />
                         <TextBox x:Name="tbDescription"
-                                 Height="27"                                
+                                 Height="27"
                                  Margin="112,15,385,0"
-                                 VerticalAlignment="Top"/>
+                                 VerticalAlignment="Top"
+                                 Width="470"
+                                 Grid.ColumnSpan="2" />
                         <Label Content="Priority:"
-                              Margin="25,0,0,42"
+                               Margin="25,0,0,42"
                                Foreground="DarkGray"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Bottom"/>
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Bottom" />
                         <ComboBox x:Name="cbPriority"
                                   Margin="112,55,0,45"
-                                  HorizontalAlignment="Left" 
+                                  HorizontalAlignment="Left"
                                   Width="148"
                                   Height="25">
                             <ComboBoxItem>
@@ -312,29 +337,33 @@
                             </ComboBoxItem>
                         </ComboBox>
                         <Label Content="Date:"
-                              Margin="342,51,0,0"
+                               Margin="295,50,0,0"
                                Foreground="DarkGray"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"/>
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top" />
                         <DatePicker x:Name="dpDate"
-                                    Margin="404,53,404,42"
-                                    SelectedDate="{x:Static sys:DateTime.Today}"/>
+                                    Margin="10,51,439,44"
+                                    SelectedDate="{x:Static sys:DateTime.Today}"
+                                    Grid.Column="1" />
                         <Button Content="Add Task"
-                                Margin="0,-67,0,15"
+                                Margin="0,7,10,82"
                                 Width="100"
-                                Height="35"
+                                Height="NaN"
                                 FontSize="18"
                                 FontWeight="Medium"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
                                 Style="{StaticResource buttonStyle}"
                                 Background="{StaticResource ButtonMnz1}"
-                                Command="{Binding AddTask}">
+                                Command="{Binding AddTask}"
+                                Grid.Column="1"
+                                VerticalAlignment="Stretch">
                             <Button.CommandParameter>
                                 <MultiBinding Converter="{StaticResource makeTask}">
-                                    <Binding ElementName="tbDescription" Path="Text"/>
-                                    <Binding ElementName="dpDate" Path="SelectedDate"/>
-                                    <Binding ElementName="cbPriority" Path="SelectedIndex"/>
+                                    <Binding ElementName="tbDescription"
+                                             Path="Text" />
+                                    <Binding ElementName="dpDate"
+                                             Path="SelectedDate" />
+                                    <Binding ElementName="cbPriority"
+                                             Path="SelectedIndex" />
                                 </MultiBinding>
                             </Button.CommandParameter>
                         </Button>
