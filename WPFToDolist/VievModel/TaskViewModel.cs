@@ -17,7 +17,7 @@ namespace WPFToDolist.VievModel
                 return model.Duty;
             }
         }
-     
+
         public DateTime Date
         {
             get
@@ -30,6 +30,14 @@ namespace WPFToDolist.VievModel
             get
             {
                 return model.Priority;
+            }
+            set
+            {
+                if(model.Priority != value)
+                {
+                    model.Priority = value;
+                    OnPropertyChanged(nameof(Priority));
+                }
             }
         }
         public bool IsDone
@@ -45,9 +53,9 @@ namespace WPFToDolist.VievModel
             this.model = model;
         }
 
-        public TaskViewModel(string duty, DateTime date, PriorityLevel priority, bool isDone)
+        public TaskViewModel(string duty , DateTime date , PriorityLevel priority , bool isDone)
         {
-            model = new TaskModel(duty, date, priority, isDone);
+            model = new TaskModel(duty , date , priority , isDone);
         }
 
         //public taskviewmodel(string duty, datetime value, prioritylevel priority, bool v)
@@ -74,12 +82,12 @@ namespace WPFToDolist.VievModel
         {
             get
             {
-                if (markAsDone == null) markAsDone = new ViewModelCommand
+                if(markAsDone == null) markAsDone = new ViewModelCommand
                 (o =>
                 {
                     model.IsDone = true;
                     OnPropertyChanged(nameof(MarkAsDone));
-                },
+                } ,
                 o =>
                 {
                     return !model.IsDone;
@@ -95,12 +103,12 @@ namespace WPFToDolist.VievModel
         {
             get
             {
-                if (markAsDone == null) markAsDone = new ViewModelCommand
+                if(markAsDone == null) markAsDone = new ViewModelCommand
                 (o =>
                 {
                     model.IsDone = false;
                     OnPropertyChanged(nameof(MarkAsUnDone));
-                },
+                } ,
                 o =>
                 {
                     return model.IsDone;
@@ -109,13 +117,12 @@ namespace WPFToDolist.VievModel
                 return markAsUnDone;
             }
         }
-
         //public string Duty1 { get; }
         //public DateTime Value { get; }
         //public PriorityLevel Priority1 { get; }
         //public bool V { get; }
         #endregion
 
-        
+
     }
 }

@@ -6,10 +6,10 @@ public abstract class ObservedObj : INotifyPropertyChanged
 
     protected void OnPropertyChanged(params string[] propNames)
     {
-        if (PropertyChanged != null)
+        if(PropertyChanged != null)
         {
-            foreach (string propName in propNames)
-                PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            foreach(string propName in propNames)
+                PropertyChanged(this , new PropertyChangedEventArgs(propName));
         }
     }
 }

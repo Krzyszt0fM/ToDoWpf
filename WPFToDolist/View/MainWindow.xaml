@@ -297,7 +297,7 @@
                           MinHeight="100"
                           VerticalAlignment="Top"
                           Height="152">
-                    
+
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="359*" />
@@ -343,7 +343,7 @@
                                VerticalAlignment="Top" />
                         <DatePicker x:Name="dpDate"
                                     Margin="10,51,439,44"
-                                    SelectedDate="{x:Static sys:DateTime.Today}"
+                                    SelectedDate="{x:Static sys:DateTime.Now}"
                                     Grid.Column="1" />
                         <Button Content="Add Task"
                                 Margin="0,7,10,82"
@@ -369,7 +369,37 @@
                         </Button>
                     </Grid>
                 </GroupBox>
+                <StackPanel
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Width="160"
+                    Height="163"
+                    Margin="0,30,41,0">
+                    <Button Content="Date (Ascending)"
+                            Command="{Binding SortCommand}"
+                            CommandParameter="DateAsc"
+                                Style="{StaticResource buttonStyle}"
+                                Width="150"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"/>
+                    <Button Content="Date (Descending)" 
+                            Command="{Binding SortCommand}"
+                            CommandParameter="DateDesc" 
+                                Style="{StaticResource buttonStyle}"
+                                Width="150"/>
+                    <Button Content="Priority (Ascending)"
+                            Command="{Binding SortCommand}"
+                            CommandParameter="PriorityAsc"
+                                Style="{StaticResource buttonStyle}"
+                                Width="150"/>
+                    <Button Content="Priority (Descending)" 
+                            Command="{Binding SortCommand}"
+                            CommandParameter="PriorityDesc"
+                                Style="{StaticResource buttonStyle}"
+                                Width="150"/>
+                </StackPanel>
             </Grid>
         </Border>
     </Border>
+
 </Window>
