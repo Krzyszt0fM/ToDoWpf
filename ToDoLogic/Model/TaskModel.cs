@@ -13,15 +13,13 @@
         //private TaskModel taskModel;
 
         public string Duty { get; set; }
-        public int ID { get; set; }
         public DateTime Date { get; set; }
         public PriorityLevel Priority { get; set; }
         public bool IsDone { get; set; }
 
-        public TaskModel(string duty , int id , DateTime date , PriorityLevel priority , bool isDone = false)
+        public TaskModel(string duty, DateTime date, PriorityLevel priority, bool isDone = false)
         {
             this.Duty = duty;
-            this.ID = id;
             this.Date = date;
             this.Priority = priority;
             this.IsDone = isDone;
@@ -42,7 +40,7 @@
 
         public override string ToString()
         {
-            return ID.ToString() + Duty + ", Date: " + Date.ToString() + ", priority: " + Priority + ", is task done: " + (IsDone ? "done" : "undone");
+            return Duty + ", Date: " + Date.ToString() + ", priority: " + Priority + ", is task done: " + (IsDone ? "done" : "undone");
         }
     }
 }
@@ -156,4 +154,5 @@
 //            taskToUpdate.Priority = priority;
 //        }
 //    }
+//} }
 //}
