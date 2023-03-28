@@ -12,13 +12,13 @@
     {
         //private TaskModel taskModel;
 
-        public string? Duty { get; set; }
+        public string Duty { get; set; }
         public int ID { get; set; }
-        public DateOnly Date { get; set; }
+        public DateTime Date { get; set; }
         public PriorityLevel Priority { get; set; }
         public bool IsDone { get; set; }
 
-        public TaskModel(string duty , int id , DateOnly date , PriorityLevel priority , bool isDone = false)
+        public TaskModel(string duty , int id , DateTime date , PriorityLevel priority , bool isDone = false)
         {
             this.Duty = duty;
             this.ID = id;
@@ -28,6 +28,10 @@
         }
 
         public TaskModel(TaskModel taskModel)
+        {
+        }
+
+        public TaskModel()
         {
         }
 

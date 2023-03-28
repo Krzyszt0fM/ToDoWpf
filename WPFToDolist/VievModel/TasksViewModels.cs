@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Windows.Input;
 using ToDoLogic.Model;
 
 namespace WPFToDolist.VievModel
@@ -26,9 +27,9 @@ namespace WPFToDolist.VievModel
             model = new Calendar(model);
 
 
-            model.AddTask(new("sto dwadziescia piemc" , 1 , DateOnly.MinValue , PriorityLevel.High));
-            model.AddTask(new("dwa" , 2 , DateOnly.MaxValue , PriorityLevel.Medium));
-            model.AddTask(new("trzy" , 3 , DateOnly.MinValue , PriorityLevel.Low));
+            model.AddTask(new("sto dwadziescia piemc" , 1 , DateTime.MinValue , PriorityLevel.High));
+            model.AddTask(new("dwa" , 2 , DateTime.MaxValue , PriorityLevel.Medium));
+            model.AddTask(new("trzy" , 3 , DateTime.MinValue , PriorityLevel.Low));
 
 
 
@@ -54,6 +55,53 @@ namespace WPFToDolist.VievModel
                         model.RemoveTask(deletedTask.GetModel());
                     }
                     break;
+            }
+        }
+
+        private ICommand deleteTask;
+
+        public ICommand DeleteTask
+        {
+            get
+            {
+                if(deleteTask == null) deleteTask = new ViewModelCommand(
+                o =>
+                {
+                    int id = (int)o;
+                    TaskViewModel task = TasksList[id];
+                    TasksList.Remove(task);
+                } ,
+                o =>
+                {
+                    if(o == null) return false;
+                    int id = (int)o;
+                    return id >= 0;
+                }
+                );
+                return deleteTask;
+            }
+        }
+
+        private ICommand addTask;
+
+        public ICommand AddTask
+        {
+            get
+            {
+                addTask ??= new ViewModelCommand(
+                o =>
+                {
+
+                    TaskViewModel? duty = o as TaskViewModel;
+                    if(duty != null) TasksList.Add(duty);
+
+                } ,
+                o =>
+                {
+                    return (o as TaskViewModel) != null;
+                }
+                );
+                return addTask;
             }
         }
 

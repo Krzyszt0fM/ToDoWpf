@@ -6,7 +6,7 @@ namespace WPFToDolist.VievModel
 {
     public class TaskViewModel : ObservedObj
     {
-        public TaskModel model;
+        private ToDoLogic.Model.TaskModel model;
 
         #region properties
         public string Duty
@@ -24,7 +24,7 @@ namespace WPFToDolist.VievModel
                 return model.ID;
             }
         }
-        public DateOnly Date
+        public DateTime Date
         {
             get
             {
@@ -51,9 +51,17 @@ namespace WPFToDolist.VievModel
             this.model = model;
         }
 
-        public TaskViewModel(string duty , int id , DateOnly date , PriorityLevel priority , bool isDone)
+        public TaskViewModel(string duty , int id , DateTime date , PriorityLevel priority , bool isDone)
         {
             model = new TaskModel(duty , id , date , priority , isDone);
+        }
+
+        public TaskViewModel(string duty , DateTime value , PriorityLevel priority , bool v)
+        {
+            Duty1 = duty;
+            Value = value;
+            Priority1 = priority;
+            V = v;
         }
 
         public TaskModel GetModel()
@@ -102,6 +110,11 @@ namespace WPFToDolist.VievModel
                 return markAsUnDone;
             }
         }
+
+        public string Duty1 { get; }
+        public DateTime Value { get; }
+        public PriorityLevel Priority1 { get; }
+        public bool V { get; }
         #endregion
 
         public override string ToString()
