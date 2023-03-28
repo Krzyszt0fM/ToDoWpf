@@ -6,7 +6,7 @@ namespace WPFToDolist.VievModel
 {
     public class TaskViewModel : ObservedObj
     {
-        private ToDoLogic.Model.TaskModel model;
+        private readonly ToDoLogic.Model.TaskModel model;
 
         #region properties
         public string Duty
@@ -17,13 +17,7 @@ namespace WPFToDolist.VievModel
                 return model.Duty;
             }
         }
-        public int ID
-        {
-            get
-            {
-                return model.ID;
-            }
-        }
+     
         public DateTime Date
         {
             get
@@ -51,23 +45,28 @@ namespace WPFToDolist.VievModel
             this.model = model;
         }
 
-        public TaskViewModel(string duty , int id , DateTime date , PriorityLevel priority , bool isDone)
+        public TaskViewModel(string duty, DateTime date, PriorityLevel priority, bool isDone)
         {
-            model = new TaskModel(duty , id , date , priority , isDone);
+            model = new TaskModel(duty, date, priority, isDone);
         }
 
-        public TaskViewModel(string duty , DateTime value , PriorityLevel priority , bool v)
-        {
-            Duty1 = duty;
-            Value = value;
-            Priority1 = priority;
-            V = v;
-        }
+        //public taskviewmodel(string duty, datetime value, prioritylevel priority, bool v)
+        //{
+        //    duty1 = duty;
+        //    value = value;
+        //    priority1 = priority;
+        //    v = v;
+        //}
 
         public TaskModel GetModel()
         {
             return model;
         }
+        public override string ToString()
+        {
+            return model.ToString();
+        }
+
         #region commands
         private ICommand markAsDone;
 
@@ -75,12 +74,12 @@ namespace WPFToDolist.VievModel
         {
             get
             {
-                if(markAsDone == null) markAsDone = new ViewModelCommand
+                if (markAsDone == null) markAsDone = new ViewModelCommand
                 (o =>
                 {
                     model.IsDone = true;
                     OnPropertyChanged(nameof(MarkAsDone));
-                } ,
+                },
                 o =>
                 {
                     return !model.IsDone;
@@ -90,18 +89,18 @@ namespace WPFToDolist.VievModel
             }
         }
 
-        private ICommand markAsUnDone;
+        private readonly ICommand markAsUnDone;
 
         public ICommand MarkAsUnDone
         {
             get
             {
-                if(markAsDone == null) markAsDone = new ViewModelCommand
+                if (markAsDone == null) markAsDone = new ViewModelCommand
                 (o =>
                 {
                     model.IsDone = false;
                     OnPropertyChanged(nameof(MarkAsUnDone));
-                } ,
+                },
                 o =>
                 {
                     return model.IsDone;
@@ -111,15 +110,12 @@ namespace WPFToDolist.VievModel
             }
         }
 
-        public string Duty1 { get; }
-        public DateTime Value { get; }
-        public PriorityLevel Priority1 { get; }
-        public bool V { get; }
+        //public string Duty1 { get; }
+        //public DateTime Value { get; }
+        //public PriorityLevel Priority1 { get; }
+        //public bool V { get; }
         #endregion
 
-        public override string ToString()
-        {
-            return model.ToString();
-        }
+        
     }
 }
