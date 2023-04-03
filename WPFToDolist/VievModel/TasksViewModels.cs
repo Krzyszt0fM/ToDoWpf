@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ConsoleToDos;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -7,11 +8,19 @@ using ToDoLogic.Model;
 
 namespace WPFToDolist.VievModel
 {
+    //TA KLASA JEST DO OBLSUGI OGOLU ZADAN!!!!!
+
+    public class SortOption
+    {
+        public string Name { get; set; }
+        public string CommandParameter { get; set; }
+    }
 
     public class TasksViewModels : ObservedObj
     {
-        public ToDoLogic.Model.Calendar model;
+        private ToDoLogic.Model.Calendar? model;
         public ObservableCollection<TaskViewModel> TasksList { get; } = new ObservableCollection<TaskViewModel>();
+
         private void CopyTasksFromModel()
         {
             TasksList.CollectionChanged -= ModelSync;
@@ -23,19 +32,12 @@ namespace WPFToDolist.VievModel
             TasksList.CollectionChanged += ModelSync;
         }
 
-        //public TasksViewModels()
-        //{
-        //    //model = new Calendar(model);
+        public TasksViewModels()
+        {
+            if(System.IO.File.Exists(@"taskList.sjon")) FileWr.DeserializeTasks();
+            else model = new ToDoLogic.Model.Calendar(model);
+        }
 
-
-        //    //model.AddTask(new("sto dwadziescia piemc", DateTime.MinValue, PriorityLevel.High));
-        //    //model.AddTask(new("dwa",  DateTime.MaxValue, PriorityLevel.Medium));
-        //    //model.AddTask(new("trzy", DateTime.MinValue, PriorityLevel.Low));
-
-
-
-        //    CopyTasksFromModel();
-        //}
 
         public void ModelSync(object? sender , NotifyCollectionChangedEventArgs e)
         {
@@ -59,7 +61,22 @@ namespace WPFToDolist.VievModel
             }
         }
 
-        private ICommand deleteTask;
+        public ICommand Save
+        {
+            get
+            {
+                return new ViewModelCommand
+                (argument =>
+                {
+                    FileWr.Serialize(model);
+                }
+                );
+            }
+        }
+
+
+
+        private ICommand? deleteTask;
 
         public ICommand DeleteTask
         {
@@ -106,7 +123,32 @@ namespace WPFToDolist.VievModel
             }
         }
 
-        private ICommand sortCommand;
+
+        public ObservableCollection<SortOption> SortOptions { get; } = new ObservableCollection<SortOption>
+        {
+        new SortOption { Name = "Date (Ascending)", CommandParameter = "DateAsc" },
+        new SortOption { Name = "Date (Descending)", CommandParameter = "DateDesc" },
+        new SortOption { Name = "Priority (Ascending)", CommandParameter = "PriorityAsc" },
+        new SortOption { Name = "Priority (Descending)", CommandParameter = "PriorityDesc" },
+        };
+
+        private SortOption _selectedSortOption;
+        public SortOption SelectedSortOption
+        {
+            get => _selectedSortOption;
+            set
+            {
+                if(_selectedSortOption != value)
+                {
+                    _selectedSortOption = value;
+
+                    // Execute the SortCommand with the specified command parameter
+                    SortCommand.Execute(_selectedSortOption.CommandParameter);
+                }
+            }
+        }
+
+        private ICommand? sortCommand;
         public ICommand SortCommand
         {
             get
@@ -152,34 +194,7 @@ namespace WPFToDolist.VievModel
                 }
                 return sortCommand;
             }
-        }
 
-        private ICommand changePriorityCommand;
-        public ICommand ChangePriorityCommand
-        {
-            get
-            {
-                if(changePriorityCommand == null)
-                {
-                    changePriorityCommand = new ViewModelCommand(
-                        o =>
-                        {
-                            var parameters = o as object[];
-                            if(parameters != null && parameters.Length == 2)
-                            {
-                                var task = parameters[0] as TaskViewModel;
-                                var priority = (PriorityLevel)parameters[1];
-                                if(task != null)
-                                {
-                                    task.Priority = priority;
-                                }
-                            }
-                        } ,
-                        o => true
-                    );
-                }
-                return changePriorityCommand;
-            }
         }
     }
 }

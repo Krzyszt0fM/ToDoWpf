@@ -13,11 +13,20 @@
         ResizeMode="NoResize"
         Background="Transparent"
         AllowsTransparency="True"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        MouseDown="Window_MouseDown">
     <Window.DataContext>
         <mw:TasksViewModels />
     </Window.DataContext>
     <Window.Resources>
+        
+        <Style x:Key="MyComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Background" Value="LightBlue" />
+            <Setter Property="Foreground" Value="DarkBlue" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+
+
         <Style x:Key="buttonStyle"
                TargetType="Button">
             <Setter Property="FontSize"
@@ -152,6 +161,7 @@
                         </Button>
 
                         <Button x:Name="btnClose"
+                                Command="{Binding Save}"
                                 BorderThickness="0"
                                 Content="X"
                                 Foreground="White"
@@ -224,8 +234,22 @@
                                  ItemsSource="{Binding TasksList}"
                                  Height="250"
                                  SelectionChanged="TaskList_SelectionChanged">
+                            <ListBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Edit" Name="CmEdit" Click="CmEdit_Click">
+                                        <Button Content="Change Priority" Command="{Binding ChangePriorityCommand}"
+                                                Style="{StaticResource buttonStyle}"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom"
+                                                Margin="0,0,150,157"
+                                                Width="120"
+                                                Height="40"/>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
+                                    
                                     <StackPanel Orientation="Vertical"
                                                 Margin="3">
                                         <StackPanel Orientation="Horizontal">
@@ -254,24 +278,10 @@
 
                         </ListBox>
 
-                        <!--<TextBox x:Name="txtUser"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                 ScrollViewer.VerticalScrollBarVisibility="Visible"
-                                 ScrollViewer.CanContentScroll="True"
-                                 AcceptsReturn="True"
-                                 TextWrapping="Wrap"
-                                 FontSize="25"
-                                 FontWeight="Medium"
-                                 FontFamily="Montserrat"
-                                 Background="Transparent"
-                                 Foreground="DarkGray"
-                                 CaretBrush="LightGray"
-                                 BorderBrush="DarkGray"
-                                 BorderThickness="2,2,2,2"
-                                 Margin="8,0,0,0"
-                                 Height="auto"
-                                 VerticalContentAlignment="Center">
-                        </TextBox>-->
+                        <!--<TextBlock>
+                            <Run Text="{Binding Path=}"
+                        PAMIETAJ ZEBY TU WSADZIC DATE UTOWRZENIA I TE KOLORKI FAJNE!!!!
+                        </TextBlock>-->
                     </StackPanel>
                 </Border>
                 <Button Content="Delete Task"
@@ -369,35 +379,51 @@
                         </Button>
                     </Grid>
                 </GroupBox>
-                <StackPanel
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Width="160"
-                    Height="163"
-                    Margin="0,30,41,0">
-                    <Button Content="Date (Ascending)"
-                            Command="{Binding SortCommand}"
-                            CommandParameter="DateAsc"
-                                Style="{StaticResource buttonStyle}"
-                                Width="150"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top"/>
-                    <Button Content="Date (Descending)" 
-                            Command="{Binding SortCommand}"
-                            CommandParameter="DateDesc" 
-                                Style="{StaticResource buttonStyle}"
-                                Width="150"/>
-                    <Button Content="Priority (Ascending)"
-                            Command="{Binding SortCommand}"
-                            CommandParameter="PriorityAsc"
-                                Style="{StaticResource buttonStyle}"
-                                Width="150"/>
-                    <Button Content="Priority (Descending)" 
-                            Command="{Binding SortCommand}"
-                            CommandParameter="PriorityDesc"
-                                Style="{StaticResource buttonStyle}"
-                                Width="150"/>
-                </StackPanel>
+
+                <ComboBox ItemsSource="{Binding SortOptions}"
+                          SelectedItem="{Binding SelectedSortOption}"
+                          DisplayMemberPath="Name"
+                          Width="160"
+                          Height="25"
+                          VerticalAlignment="Top"
+                          HorizontalAlignment="Right"
+                          Margin="40,40,25,40">
+
+                    <ComboBox.Resources>
+                            <Style TargetType="{x:Type ComboBoxItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                                            <Border x:Name="Bd"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Padding="{TemplateBinding Padding}"
+                                    SnapsToDevicePixels="true">
+                                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsHighlighted" Value="true">
+                                                <Setter TargetName="Bd" Property="Background" Value="#483D8B" />
+                                                <Setter TargetName="Bd" Property="BorderBrush" Value="#483D8B" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="false">
+                                                <Setter Property="Foreground" Value="#483D8B" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ComboBox.Resources>
+                    </ComboBox>
+                
+
+                <!--<Menu Name="menu1" Height="22" Width="200" 
+                Sprobuj ustawic aby menu wyswietlalo sie tylko po right clicku
+                na item w list boxie jak ci sie uda to jestes kozak/>-->
             </Grid>
         </Border>
     </Border>

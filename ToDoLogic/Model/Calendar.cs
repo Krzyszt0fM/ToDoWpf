@@ -23,7 +23,7 @@ namespace ToDoLogic.Model
             return taskList.Remove(model);
         }
 
-        public void ChangePriority(TaskModel model, PriorityLevel priority)
+        public void ChangePriority(TaskModel model , PriorityLevel priority)
         {
             model.Priority = priority;
         }
@@ -36,11 +36,11 @@ namespace ToDoLogic.Model
             }
         }
 
-        public TaskModel this[int id]
+        public TaskModel this[int index]
         {
             get
             {
-                return taskList[id];
+                return taskList[index];
             }
         }
 

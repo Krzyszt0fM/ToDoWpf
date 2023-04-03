@@ -4,8 +4,15 @@ using ToDoLogic.Model;
 
 namespace WPFToDolist.VievModel
 {
+    //KLASA TESTOWA DO SPRAWDZENIA JAK TO ZADZIALA
+
+
+
+
     public class TaskViewModel : ObservedObj
     {
+        //TA KLASA JEST DO OBLSUGI POJEDYNCZEGO WYBRANEGO ZADANIA, NP DO EDYCJI!!!!!
+
         private readonly ToDoLogic.Model.TaskModel model;
 
         #region properties
@@ -15,6 +22,14 @@ namespace WPFToDolist.VievModel
             get
             {
                 return model.Duty;
+            }
+        }
+
+        public DateTime CreationDate
+        {
+            get
+            {
+                return model.CreationDate;
             }
         }
 
@@ -40,11 +55,20 @@ namespace WPFToDolist.VievModel
                 }
             }
         }
+
         public bool IsDone
         {
             get
             {
                 return model.IsDone;
+            }
+        }
+
+        public bool IsStayedUndone
+        {
+            get
+            {
+                return !IsDone && (DateTime.Now > Date);
             }
         }
         #endregion
@@ -53,23 +77,18 @@ namespace WPFToDolist.VievModel
             this.model = model;
         }
 
-        public TaskViewModel(string duty , DateTime date , PriorityLevel priority , bool isDone)
+        public TaskViewModel(string duty , DateTime creationDate , DateTime date , PriorityLevel priority , bool isDone)
         {
-            model = new TaskModel(duty , date , priority , isDone);
+            model = new TaskModel(duty , creationDate , date , priority , isDone);
         }
 
-        //public taskviewmodel(string duty, datetime value, prioritylevel priority, bool v)
-        //{
-        //    duty1 = duty;
-        //    value = value;
-        //    priority1 = priority;
-        //    v = v;
-        //}
+
 
         public TaskModel GetModel()
         {
             return model;
         }
+
         public override string ToString()
         {
             return model.ToString();
@@ -77,7 +96,6 @@ namespace WPFToDolist.VievModel
 
         #region commands
         private ICommand markAsDone;
-
         public ICommand MarkAsDone
         {
             get
@@ -86,7 +104,7 @@ namespace WPFToDolist.VievModel
                 (o =>
                 {
                     model.IsDone = true;
-                    OnPropertyChanged(nameof(MarkAsDone));
+                    OnPropertyChanged(nameof(MarkAsDone) , nameof(IsStayedUndone));
                 } ,
                 o =>
                 {
@@ -97,17 +115,16 @@ namespace WPFToDolist.VievModel
             }
         }
 
-        private readonly ICommand markAsUnDone;
-
+        private ICommand markAsUnDone;
         public ICommand MarkAsUnDone
         {
             get
             {
-                if(markAsDone == null) markAsDone = new ViewModelCommand
+                if(markAsUnDone == null) markAsUnDone = new ViewModelCommand
                 (o =>
                 {
                     model.IsDone = false;
-                    OnPropertyChanged(nameof(MarkAsUnDone));
+                    OnPropertyChanged(nameof(MarkAsUnDone) , nameof(IsStayedUndone));
                 } ,
                 o =>
                 {
@@ -117,12 +134,6 @@ namespace WPFToDolist.VievModel
                 return markAsUnDone;
             }
         }
-        //public string Duty1 { get; }
-        //public DateTime Value { get; }
-        //public PriorityLevel Priority1 { get; }
-        //public bool V { get; }
         #endregion
-
-
     }
 }

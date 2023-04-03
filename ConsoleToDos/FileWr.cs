@@ -6,7 +6,7 @@ namespace ConsoleToDos
 
     public static class FileWr
     {
-        public static void Serialize(this TaskModel model)
+        public static void Serialize(this Calendar model)
         {
             List<TaskModel> taskList = new List<TaskModel>();
             DeserializeTasks();

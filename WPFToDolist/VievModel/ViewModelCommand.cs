@@ -7,20 +7,20 @@ public class ViewModelCommand : ICommand
 {
     //Fields
     private Action<object?> _executeAction;
-    private Func<object?, bool> _canExcuteAction;
+    private Func<object? , bool> _canExcuteAction;
 
     //Constuctors
-    public ViewModelCommand(Action<object?> executeAction, Func<object, bool> _canExcuteAction = null)
+    public ViewModelCommand(Action<object?> executeAction , Func<object? , bool> _canExcuteAction = null)
     {
-        //if (_executeAction == null) throw new ArgumentNullException(nameof(executeAction));
+        //if(_executeAction == null) throw new ArgumentNullException(nameof(executeAction));
         //else
-            this._executeAction = executeAction;
+        this._executeAction = executeAction;
         this._canExcuteAction = _canExcuteAction;
 
     }
     public bool CanExecute(object? parameter)
     {
-        if (_canExcuteAction == null) return true;
+        if(_canExcuteAction == null) return true;
         else return _canExcuteAction(parameter);
     }
 

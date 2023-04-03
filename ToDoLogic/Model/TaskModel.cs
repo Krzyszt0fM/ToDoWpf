@@ -1,7 +1,7 @@
 ﻿namespace ToDoLogic.Model
 {
 
-    public enum PriorityLevel
+    public enum PriorityLevel : byte
     {
         Low,
         Medium,
@@ -10,37 +10,25 @@
 
     public class TaskModel
     {
-        //private TaskModel taskModel;
-
         public string Duty { get; set; }
         public DateTime Date { get; set; }
+        public DateTime CreationDate { get; set; }
         public PriorityLevel Priority { get; set; }
         public bool IsDone { get; set; }
 
-        public TaskModel(string duty, DateTime date, PriorityLevel priority, bool isDone = false)
+        public TaskModel(string duty , DateTime creationDate , DateTime date , PriorityLevel priority , bool isDone = false)
         {
             this.Duty = duty;
+            this.CreationDate = creationDate;
             this.Date = date;
             this.Priority = priority;
             this.IsDone = isDone;
         }
 
-        public TaskModel(TaskModel taskModel)
-        {
-        }
-
-        public TaskModel()
-        {
-        }
-
-        //public TaskModel(TaskModel taskModel)
-        //{
-        //    this.taskModel = taskModel;
-        //}
-
         public override string ToString()
         {
-            return Duty + ", Date: " + Date.ToString() + ", priority: " + Priority + ", is task done: " + (IsDone ? "done" : "undone");
+            return Duty + ", Creation Time " + CreationDate.ToString() + ", Date: " + Date.ToString() +
+                ", priority: " + Priority.ToString() + ", is task done: " + (IsDone ? "done" : "undone");
         }
     }
 }
