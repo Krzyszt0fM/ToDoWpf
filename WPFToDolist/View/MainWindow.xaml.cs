@@ -43,9 +43,5 @@ namespace WPFToDolist
 
         }
 
-        private void CmEdit_Click(object sender , RoutedEventArgs e)
-        {
-
-        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ConsoleToDos;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -10,21 +11,46 @@ namespace WPFToDolist.VievModel
 {
     //TA KLASA JEST DO OBLSUGI OGOLU ZADAN!!!!!
 
+
+
     public class SortOption
     {
-        public string Name { get; set; }
-        public string CommandParameter { get; set; }
+        public string? Name { get; set; }
+        public string? CommandParameter { get; set; }
     }
 
     public class TasksViewModels : ObservedObj
     {
-        private ToDoLogic.Model.Calendar? model;
-        public ObservableCollection<TaskViewModel> TasksList { get; } = new ObservableCollection<TaskViewModel>();
+        private readonly Calendar? model;
+        public ObservableCollection<TaskViewModel> TasksList { get; set; } = new ObservableCollection<TaskViewModel>();
+
+        private DateTime startDate = DateTime.Now;
+        public DateTime NewDate
+        {
+            get { return startDate; }
+            set { startDate = value; OnPropertyChanged("NewDate"); }
+        }
+
+        private string newDuty;
+        public string NewDuty
+        {
+            get { return newDuty; }
+            set { newDuty = value; OnPropertyChanged("NewDuty"); }
+        }
+
+
+        private PriorityLevel newPriority;
+        public PriorityLevel NewPriority
+        {
+            get { return newPriority; }
+            set { newPriority = value; OnPropertyChanged("NewPriority"); }
+        }
+
 
         private void CopyTasksFromModel()
         {
-            TasksList.CollectionChanged -= ModelSync;
             TasksList.Clear();
+            TasksList.CollectionChanged -= ModelSync;
             foreach(TaskModel taskModel in model)
             {
                 TasksList.Add(new TaskViewModel(taskModel));
@@ -61,16 +87,19 @@ namespace WPFToDolist.VievModel
             }
         }
 
+
+        private ICommand save;
         public ICommand Save
         {
             get
             {
-                return new ViewModelCommand
-                (argument =>
-                {
-                    FileWr.Serialize(model);
-                }
-                );
+                if(save == null) save = new ViewModelCommand(
+                    o =>
+                    {
+                        FileWr.Serialize(model);
+                    }
+                   );
+                return save;
             }
         }
 
@@ -195,6 +224,35 @@ namespace WPFToDolist.VievModel
                 return sortCommand;
             }
 
+        }
+
+
+        private ICommand editTask;
+        public ICommand EditTask
+        {
+            get
+            {
+                if(editTask == null) editTask = new ViewModelCommand(
+                  o =>
+                  {
+                      int id = (int)o;
+                      TaskViewModel task = TasksList[id];
+                      task.GetModel().Date = NewDate;
+                      task.GetModel().Duty = NewDuty;
+                      task.GetModel().Priority = NewPriority;
+                      CopyTasksFromModel();
+
+
+                  } ,
+                  o =>
+                  {
+                      if(o == null) return false;
+                      int taskIndex = (int)o;
+                      return taskIndex >= 0;
+                  });
+                return editTask;
+
+            }
         }
     }
 }

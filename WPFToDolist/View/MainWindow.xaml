@@ -19,13 +19,16 @@
         <mw:TasksViewModels />
     </Window.DataContext>
     <Window.Resources>
-        
-        <Style x:Key="MyComboBoxStyle" TargetType="ComboBox">
-            <Setter Property="Background" Value="LightBlue" />
-            <Setter Property="Foreground" Value="DarkBlue" />
-            <Setter Property="FontSize" Value="18" />
-        </Style>
 
+        <Style x:Key="MyComboBoxStyle"
+               TargetType="ComboBox">
+            <Setter Property="Background"
+                    Value="LightBlue" />
+            <Setter Property="Foreground"
+                    Value="DarkBlue" />
+            <Setter Property="FontSize"
+                    Value="18" />
+        </Style>
 
         <Style x:Key="buttonStyle"
                TargetType="Button">
@@ -226,30 +229,15 @@
                                    FontFamily="Montserrat"
                                    Width="965"><Run Text="{Binding TasksList.Count, Mode=OneWay}" /></TextBlock>
                         <ListBox x:Name="TaskList"
-                                 Margin="10,35,10,200"
                                  Background="Transparent"
                                  Foreground="DarkGray"
                                  FontSize="18"
                                  FontFamily="Monserat"
                                  ItemsSource="{Binding TasksList}"
-                                 Height="250"
-                                 SelectionChanged="TaskList_SelectionChanged">
-                            <ListBox.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="Edit" Name="CmEdit" Click="CmEdit_Click">
-                                        <Button Content="Change Priority" Command="{Binding ChangePriorityCommand}"
-                                                Style="{StaticResource buttonStyle}"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Bottom"
-                                                Margin="0,0,150,157"
-                                                Width="120"
-                                                Height="40"/>
-                                    </MenuItem>
-                                </ContextMenu>
-                            </ListBox.ContextMenu>
+                                 Height="250">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    
+
                                     <StackPanel Orientation="Vertical"
                                                 Margin="3">
                                         <StackPanel Orientation="Horizontal">
@@ -323,17 +311,20 @@
                                  Margin="112,15,385,0"
                                  VerticalAlignment="Top"
                                  Width="470"
-                                 Grid.ColumnSpan="2" />
+                                 Grid.ColumnSpan="2" 
+                                 Text ="{Binding Path=NewDuty}"/>
                         <Label Content="Priority:"
                                Margin="25,0,0,42"
                                Foreground="DarkGray"
-                               HorizontalAlignment="Left"
+                               HorizontalAlignment="Left"                             
                                VerticalAlignment="Bottom" />
                         <ComboBox x:Name="cbPriority"
+                                  SelectedIndex="{Binding NewPriority}"
                                   Margin="112,55,0,45"
                                   HorizontalAlignment="Left"
                                   Width="148"
                                   Height="25">
+
                             <ComboBoxItem>
                                 Low Priority
                             </ComboBoxItem>
@@ -353,7 +344,7 @@
                                VerticalAlignment="Top" />
                         <DatePicker x:Name="dpDate"
                                     Margin="10,51,439,44"
-                                    SelectedDate="{x:Static sys:DateTime.Now}"
+                                    SelectedDate="{Binding Path=NewDate}"
                                     Grid.Column="1" />
                         <Button Content="Add Task"
                                 Margin="0,7,10,82"
@@ -377,6 +368,19 @@
                                 </MultiBinding>
                             </Button.CommandParameter>
                         </Button>
+                        <Button Content="Edit Task"
+                                Margin="0,7,130,82"
+                                Width="100"
+                                Height="NaN"
+                                FontSize="18"
+                                FontWeight="Medium"
+                                Style="{StaticResource buttonStyle}"
+                                Background="{StaticResource ButtonMnz1}"
+                                Command="{Binding EditTask}"
+                                CommandParameter="{Binding ElementName=TaskList, Path=SelectedIndex}"
+                                Grid.Column="1"
+                                VerticalAlignment="Stretch">
+                        </Button>
                     </Grid>
                 </GroupBox>
 
@@ -390,42 +394,43 @@
                           Margin="40,40,25,40">
 
                     <ComboBox.Resources>
-                            <Style TargetType="{x:Type ComboBoxItem}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-                                            <Border x:Name="Bd"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    Padding="{TemplateBinding Padding}"
-                                    SnapsToDevicePixels="true">
-                                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsHighlighted" Value="true">
-                                                <Setter TargetName="Bd" Property="Background" Value="#483D8B" />
-                                                <Setter TargetName="Bd" Property="BorderBrush" Value="#483D8B" />
-                                                </Trigger>
-                                                <Trigger Property="IsEnabled" Value="false">
-                                                <Setter Property="Foreground" Value="#483D8B" />
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ComboBox.Resources>
-                    </ComboBox>
-                
-
-                <!--<Menu Name="menu1" Height="22" Width="200" 
-                Sprobuj ustawic aby menu wyswietlalo sie tylko po right clicku
-                na item w list boxie jak ci sie uda to jestes kozak/>-->
+                        <Style TargetType="{x:Type ComboBoxItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                                        <Border x:Name="Bd"
+                                                Background="{StaticResource ButtonMnz1}"
+                                                BorderBrush="NavajoWhite"
+                                                BorderThickness="1"
+                                                Padding="{TemplateBinding Padding}"
+                                                SnapsToDevicePixels="true">
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsHighlighted"
+                                                     Value="true">
+                                                <Setter TargetName="Bd"
+                                                        Property="Background"
+                                                        Value="#483D8B" />
+                                                <Setter TargetName="Bd"
+                                                        Property="BorderBrush"
+                                                        Value="#483D8B" />
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled"
+                                                     Value="false">
+                                                <Setter Property="Foreground"
+                                                        Value="#483D8B" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ComboBox.Resources>
+                </ComboBox>
             </Grid>
         </Border>
     </Border>
-
 </Window>

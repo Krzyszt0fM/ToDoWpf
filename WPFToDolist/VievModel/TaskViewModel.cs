@@ -136,4 +136,60 @@ namespace WPFToDolist.VievModel
         }
         #endregion
     }
+
+    //    public class MainWindowViewModel
+    //    {
+    //        public ICommand BtnStartCommand { get; set; }
+    //        public ICommand WindowMouseDownCommand { get; set; }
+    //        public ICommand BtnMinimizeCommand { get; set; }
+    //        public ICommand BtnCloseCommand { get; set; }
+    //        public ICommand TaskListSelectionChangedCommand { get; set; }
+    //        public ICommand CmEditCommand { get; set; }
+
+    //        public MainWindowViewModel()
+    //        {
+    //            BtnStartCommand = new ViewModelCommand(BtnStart);
+    //            WindowMouseDownCommand = new ViewModelCommand<MouseEventArgs>(Window_MouseDown);
+    //            BtnMinimizeCommand = new ViewModelCommand(BtnMinimize);
+    //            BtnCloseCommand = new ViewModelCommand(BtnClose);
+    //            TaskListSelectionChangedCommand = new ViewModelCommand<SelectionChangedEventArgs>(TaskList_SelectionChanged);
+    //            CmEditCommand = new ViewModelCommand(CmEdit);
+
+    //        }
+    //        private void BtnStart()
+    //        {
+    //            // Navigate to MainWindow
+
+    //            var MainWindow = new MainWindow();
+    //            MainWindow.Show();
+    //            Close();
+    //        }
+
+    //        private void Window_MouseDown(MouseEventArgs e)
+    //        {
+    //            if(e.LeftButton == MouseButtonState.Pressed)
+    //                DragMove();
+    //        }
+
+    //        private void BtnMinimize()
+    //        {
+    //            WindowState = WindowState.Minimized;
+    //        }
+
+    //        private void BtnClose()
+    //        {
+    //            Application.Current.Shutdown();
+    //        }
+
+    //        private void TaskList_SelectionChanged(SelectionChangedEventArgs e)
+    //        {
+
+    //        }
+
+    //        private void CmEdit()
+    //        {
+
+    //        }
+    //    }
+    //}
 }
