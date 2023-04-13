@@ -7,38 +7,20 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="500">
     <Grid>
-        <Button
-            x:Name="AddTask"
-            Content="Add Task"
-            Height="40"
-            Width="120"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom">
-        </Button>
-        <Button
-            x:Name="DeleteTask"
-            Content="Delete Task"
-            Height="40"
-            Width="120"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom">
-        </Button>
-
-        <ListBox
-            Height="370"
-            Width="450"
-            Margin="10,15,10,10"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top">
-        </ListBox>
-
-        <TextBox
-            Text="Your Task:"
-            Height="50"
-            Width="250"
-            Margin="10,15,10,0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Bottom">
-        </TextBox>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock
+            Margin="5"
+            Text="Write Your Task:">
+        </TextBlock>
+        <TextBox x:Name="InputTextBox" Grid.Row="0" Margin="90,6,10,14"/>
+        <ListBox x:Name="ListBox" Grid.Row="1" Margin="10"/>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button x:Name="AddButton" Content="Add" Margin="0,0,10,0" Click="AddButton_Click"/>
+            <Button x:Name="DeleteButton" Content="Delete" Click="DeleteButton_Click"/>
+        </StackPanel>
     </Grid>
 </Window>

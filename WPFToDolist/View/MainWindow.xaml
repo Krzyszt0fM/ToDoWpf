@@ -164,9 +164,10 @@
                         </Button>
 
                         <Button x:Name="btnClose"
+                                Content="X" 
                                 Command="{Binding Save}"
                                 BorderThickness="0"
-                                Content="X"
+                                
                                 Foreground="White"
                                 FontSize="10"
                                 FontFamily="Montserrat"

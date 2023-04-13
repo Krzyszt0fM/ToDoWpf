@@ -23,11 +23,6 @@ namespace ToDoLogic.Model
             return taskList.Remove(model);
         }
 
-        public void ChangePriority(TaskModel model , PriorityLevel priority)
-        {
-            model.Priority = priority;
-        }
-
         public int NumOfTasks
         {
             get

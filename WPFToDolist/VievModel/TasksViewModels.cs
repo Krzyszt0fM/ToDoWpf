@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using ToDoLogic.Model;
@@ -10,18 +10,14 @@ using ToDoLogic.Model;
 namespace WPFToDolist.VievModel
 {
     //TA KLASA JEST DO OBLSUGI OGOLU ZADAN!!!!!
-
-
-
     public class SortOption
     {
         public string? Name { get; set; }
         public string? CommandParameter { get; set; }
     }
-
     public class TasksViewModels : ObservedObj
     {
-        private readonly Calendar? model;
+        public Calendar model;
         public ObservableCollection<TaskViewModel> TasksList { get; set; } = new ObservableCollection<TaskViewModel>();
 
         private DateTime startDate = DateTime.Now;
@@ -46,64 +42,75 @@ namespace WPFToDolist.VievModel
             set { newPriority = value; OnPropertyChanged("NewPriority"); }
         }
 
-
-        private void CopyTasksFromModel()
+        public void Load()
         {
-            TasksList.Clear();
-            TasksList.CollectionChanged -= ModelSync;
-            foreach(TaskModel taskModel in model)
-            {
-                TasksList.Add(new TaskViewModel(taskModel));
-            }
-            TasksList.CollectionChanged += ModelSync;
+            TasksList = WpfFileWR.DeserializeObs<TaskViewModel>("tasks.json");
         }
+
+        #region do przemyslenia
+
+        //public void ModelSync(object? sender , NotifyCollectionChangedEventArgs e)
+        //{
+        //    model = new Calendar(model);
+        //    switch(e.Action)
+        //    {
+        //        case NotifyCollectionChangedAction.Add:
+        //            TaskViewModel newTask = (TaskViewModel)e.NewItems[0];
+        //            if(newTask != null)
+        //            {
+        //                model.AddTask(newTask.GetModel());
+        //            }
+        //            break;
+
+        //        case NotifyCollectionChangedAction.Remove:
+        //            TaskViewModel deletedTask = (TaskViewModel)e.OldItems[0];
+        //            if(deletedTask != null)
+        //            {
+        //                model.RemoveTask(deletedTask.GetModel());
+        //            }
+        //            break;
+        //    }
+        //}
+
+        //private void CopyTasksFromModel()
+        //{
+        //    model = new Calendar(model);
+        //    TasksList.CollectionChanged -= ModelSync;
+        //    TasksList.Clear();
+
+        //    foreach(TaskModel taskModel in model)
+        //    {
+        //        TasksList.Add(new TaskViewModel(taskModel));
+        //    }
+        //    TasksList.CollectionChanged += ModelSync;
+        //}
+        #endregion 
+
 
         public TasksViewModels()
         {
-            if(System.IO.File.Exists(@"taskList.sjon")) FileWr.DeserializeTasks();
-            else model = new ToDoLogic.Model.Calendar(model);
-        }
-
-
-        public void ModelSync(object? sender , NotifyCollectionChangedEventArgs e)
-        {
-            switch(e.Action)
+            if(File.Exists("tasks.json"))
             {
-                case NotifyCollectionChangedAction.Add:
-                    TaskViewModel newTask = (TaskViewModel)e.NewItems[0];
-                    if(newTask != null)
-                    {
-                        model.AddTask(newTask.GetModel());
-                    }
-                    break;
-
-                case NotifyCollectionChangedAction.Remove:
-                    TaskViewModel deletedTask = (TaskViewModel)e.OldItems[0];
-                    if(deletedTask != null)
-                    {
-                        model.RemoveTask(deletedTask.GetModel());
-                    }
-                    break;
+                Load();
+            }
+            else
+            {
+                return;
             }
         }
-
 
         private ICommand save;
         public ICommand Save
         {
             get
             {
-                if(save == null) save = new ViewModelCommand(
-                    o =>
-                    {
-                        FileWr.Serialize(model);
-                    }
-                   );
+                if(save == null)
+                {
+                    save = new ViewModelCommand(o => WpfFileWR.SaveWpf(TasksList , "tasks.json"));
+                }
                 return save;
             }
         }
-
-
 
         private ICommand? deleteTask;
 
@@ -170,8 +177,6 @@ namespace WPFToDolist.VievModel
                 if(_selectedSortOption != value)
                 {
                     _selectedSortOption = value;
-
-                    // Execute the SortCommand with the specified command parameter
                     SortCommand.Execute(_selectedSortOption.CommandParameter);
                 }
             }
@@ -227,12 +232,12 @@ namespace WPFToDolist.VievModel
         }
 
 
-        private ICommand editTask;
+        private ICommand? editTask;
         public ICommand EditTask
         {
             get
             {
-                if(editTask == null) editTask = new ViewModelCommand(
+                editTask ??= new ViewModelCommand(
                   o =>
                   {
                       int id = (int)o;
@@ -240,9 +245,6 @@ namespace WPFToDolist.VievModel
                       task.GetModel().Date = NewDate;
                       task.GetModel().Duty = NewDuty;
                       task.GetModel().Priority = NewPriority;
-                      CopyTasksFromModel();
-
-
                   } ,
                   o =>
                   {
@@ -250,8 +252,8 @@ namespace WPFToDolist.VievModel
                       int taskIndex = (int)o;
                       return taskIndex >= 0;
                   });
-                return editTask;
 
+                return editTask;
             }
         }
     }

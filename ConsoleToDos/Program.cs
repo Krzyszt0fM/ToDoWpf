@@ -5,7 +5,7 @@ class Program
 {
     static void Main(string[] args)
     {
-
+        var myCalendar = new Calend();
         int id = 1;
 
         FileWr.DeserializeTasks();
@@ -28,23 +28,23 @@ class Program
                 case "1":
                 {
                     Console.Write("Enter task description: ");
-                    string? task = Console.ReadLine();
+                    string? duty = Console.ReadLine();
                     Console.Write("Enter task date (yyyy-mm-dd): ");
-                    DateOnly date = DateOnly.Parse(Console.ReadLine());
-                    bool IsDone = false;
+                    DateTime date = DateTime.Parse(Console.ReadLine());
+                    bool isDone = false;
                     Console.Write("Enter task priority 0 - Low 1 - Medium 2 - High: ");
                     PriorityLevel priority = (PriorityLevel)Enum.Parse(typeof(PriorityLevel) , Console.ReadLine());
-                    //myTaskModel.AddTask();
+                    myCalendar.AddTask(isDone , id , date , priority , duty);
                     id++;
                     break;
                 }
 
                 case "2":
                 {
-                    //myTaskModel.ShowTasks();
+                    myCalendar.ShowTasks();
                     Console.WriteLine("Enter a task index from the list above:");
                     int idd = int.Parse(Console.ReadLine());
-                    //myTaskModel.DeleteTask(idd);
+                    myCalendar.DeleteTask(idd);
                     Console.ReadKey();
                     break;
                 }
@@ -59,54 +59,63 @@ class Program
                     switch(showOption)
                     {
                         case "1":
+                        {
+                            myCalendar.ShowTasks();
                             break;
+                        }
+
                         case "2":
+                        {
                             showDoneTasks = true;
                             break;
+                        }
+
                         case "3":
+                        {
                             showDoneTasks = false;
                             break;
+                        }
+
                         default:
                             Console.WriteLine("Invalid option.");
                             break;
-
                     }
-                    //myTaskModel.ShowTasks();
                     break;
                 }
 
-                //case "4":
-                //{
-                //    myTaskModel.ShowTasks();
-                //    Console.WriteLine("Enter a task index from list above");
-                //    int taskId = int.Parse(Console.ReadLine());
-                //    myTaskModel.MoveTask(taskId);
-                //    break;
-                //}
+                case "4":
+                {
+                    myCalendar.ShowTasks();
+                    Console.WriteLine("Enter a task index from list above");
+                    int taskId = int.Parse(Console.ReadLine());
+                    myCalendar.MoveTask(taskId);
+                    break;
+                }
 
                 case "5":
                 {
+                    myCalendar.ShowTasks();
                     Console.Write("Enter task ID: ");
                     int taskId = int.Parse(Console.ReadLine());
                     Console.Write("Is task done? (Y/N): ");
-                    //bool isDone = Console.ReadLine().ToLower() == "y";
-                    //myTaskModel.IsDone(taskId , isDone);
+                    bool isDone = Console.ReadLine().ToLower() == "y";
+                    myCalendar.IsDone(taskId , isDone);
                     break;
                 }
 
                 case "6":
                 {
-                    //myTaskModel.ShowTasks();
+                    myCalendar.ShowTasks();
                     Console.WriteLine("Enter the ID of the task you want to change the priority for:");
                     int taskId = int.Parse(Console.ReadLine());
                     PriorityLevel priority = (PriorityLevel)Enum.Parse(typeof(PriorityLevel) , Console.ReadLine());
-                    //myTaskModel.changePriority(taskId , priority);
+                    myCalendar.ChangePriority(taskId , priority);
                     break;
                 }
 
                 case "7":
                 {
-                    ;
+
                     Console.WriteLine("Press 1 to sort by ID ascending\n" +
                     "Press 2 to sort by ID descending\n" +
                     "Press 3 to sort by priority ascending\n" +
@@ -114,13 +123,15 @@ class Program
                     "Press 5 to sort by date ascending\n" +
                     "Press 6 to sort by date descending");
                     string? sortChoice = Console.ReadLine();
-                    //myTaskModel.SortTasks(sortChoice);
+                    myCalendar.SortTasks(sortChoice);
+                    myCalendar.ShowTasks();
                     break;
 
                 }
 
                 case "8":
                 {
+                    FileWr.Serialize(myCalendar.Duties);
                     Console.WriteLine("Thank you For using this app! \nPress any key to exit.");
                     Environment.Exit(0);
                     Console.ReadKey();
@@ -135,7 +146,7 @@ class Program
 
                 }
             }
-            //FileWr.Serialize();
+            FileWr.Serialize(myCalendar.Duties);
         }
     }
 }
