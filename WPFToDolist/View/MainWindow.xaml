@@ -380,7 +380,8 @@
                                 Command="{Binding EditTask}"
                                 CommandParameter="{Binding ElementName=TaskList, Path=SelectedIndex}"
                                 Grid.Column="1"
-                                VerticalAlignment="Stretch">
+                                VerticalAlignment="Stretch"
+                                Click="Edit_Button_Click">
                         </Button>
                     </Grid>
                 </GroupBox>

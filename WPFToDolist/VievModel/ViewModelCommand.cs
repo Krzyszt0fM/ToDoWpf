@@ -12,8 +12,6 @@ public class ViewModelCommand : ICommand
     //Constuctors
     public ViewModelCommand(Action<object?> executeAction , Func<object? , bool> _canExcuteAction = null)
     {
-        //if(_executeAction == null) throw new ArgumentNullException(nameof(executeAction));
-        //else
         this._executeAction = executeAction;
         this._canExcuteAction = _canExcuteAction;
 

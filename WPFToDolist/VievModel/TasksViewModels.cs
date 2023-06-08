@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
@@ -15,10 +16,13 @@ namespace WPFToDolist.VievModel
         public string? Name { get; set; }
         public string? CommandParameter { get; set; }
     }
+
     public class TasksViewModels : ObservedObj
     {
-        public Calendar model;
+        private Calendar model;
         public ObservableCollection<TaskViewModel> TasksList { get; set; } = new ObservableCollection<TaskViewModel>();
+
+
 
         private DateTime startDate = DateTime.Now;
         public DateTime NewDate
@@ -47,44 +51,6 @@ namespace WPFToDolist.VievModel
             TasksList = WpfFileWR.DeserializeObs<TaskViewModel>("tasks.json");
         }
 
-        #region do przemyslenia
-
-        //public void ModelSync(object? sender , NotifyCollectionChangedEventArgs e)
-        //{
-        //    model = new Calendar(model);
-        //    switch(e.Action)
-        //    {
-        //        case NotifyCollectionChangedAction.Add:
-        //            TaskViewModel newTask = (TaskViewModel)e.NewItems[0];
-        //            if(newTask != null)
-        //            {
-        //                model.AddTask(newTask.GetModel());
-        //            }
-        //            break;
-
-        //        case NotifyCollectionChangedAction.Remove:
-        //            TaskViewModel deletedTask = (TaskViewModel)e.OldItems[0];
-        //            if(deletedTask != null)
-        //            {
-        //                model.RemoveTask(deletedTask.GetModel());
-        //            }
-        //            break;
-        //    }
-        //}
-
-        //private void CopyTasksFromModel()
-        //{
-        //    model = new Calendar(model);
-        //    TasksList.CollectionChanged -= ModelSync;
-        //    TasksList.Clear();
-
-        //    foreach(TaskModel taskModel in model)
-        //    {
-        //        TasksList.Add(new TaskViewModel(taskModel));
-        //    }
-        //    TasksList.CollectionChanged += ModelSync;
-        //}
-        #endregion 
 
 
         public TasksViewModels()
@@ -98,6 +64,39 @@ namespace WPFToDolist.VievModel
                 return;
             }
         }
+        #region do przemyslenia
+        private void CopyTasksFromModel()
+        {
+            TasksList.Clear();
+            TasksList.CollectionChanged -= ModelSync;
+            foreach(TaskModel taskModel in model)
+            {
+                TasksList.Add(new TaskViewModel(taskModel));
+            }
+            TasksList.CollectionChanged += ModelSync;
+        }
+        public void ModelSync(object? sender , NotifyCollectionChangedEventArgs e)
+        {
+            switch(e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    TaskViewModel newTask = (TaskViewModel)e.NewItems[0];
+                    if(newTask != null)
+                    {
+                        model.AddTask(newTask.GetModel());
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    TaskViewModel deletedTask = (TaskViewModel)e.OldItems[0];
+                    if(deletedTask != null)
+                    {
+                        model.RemoveTask(deletedTask.GetModel());
+                    }
+                    break;
+            }
+        }
+        #endregion
 
         private ICommand save;
         public ICommand Save
@@ -135,6 +134,10 @@ namespace WPFToDolist.VievModel
                 return deleteTask;
             }
         }
+
+
+
+
 
         private ICommand addTask;
 
@@ -232,12 +235,12 @@ namespace WPFToDolist.VievModel
         }
 
 
-        private ICommand? editTask;
+        private ICommand editTask;
         public ICommand EditTask
         {
             get
             {
-                editTask ??= new ViewModelCommand(
+                if(editTask == null) editTask = new ViewModelCommand(
                   o =>
                   {
                       int id = (int)o;
@@ -245,6 +248,7 @@ namespace WPFToDolist.VievModel
                       task.GetModel().Date = NewDate;
                       task.GetModel().Duty = NewDuty;
                       task.GetModel().Priority = NewPriority;
+
                   } ,
                   o =>
                   {
@@ -252,8 +256,8 @@ namespace WPFToDolist.VievModel
                       int taskIndex = (int)o;
                       return taskIndex >= 0;
                   });
-
                 return editTask;
+
             }
         }
     }

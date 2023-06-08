@@ -5,11 +5,9 @@ using ToDoLogic.Model;
 
 namespace WPFToDolist.VievModel
 {
-    //KLASA TESTOWA DO SPRAWDZENIA JAK TO ZADZIALA
+
     public class TaskViewModel : ObservedObj
     {
-        //TA KLASA JEST DO OBLSUGI POJEDYNCZEGO WYBRANEGO ZADANIA, NP DO EDYCJI!!!!!
-
         private ToDoLogic.Model.TaskModel model;
 
         #region properties

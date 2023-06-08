@@ -38,7 +38,10 @@ namespace WPFToDolist
             Application.Current.Shutdown();
         }
 
-
+        private void Edit_Button_Click(object sender , RoutedEventArgs e)
+        {
+            MessageBox.Show("Changes will show up, after restarting application");
+        }
 
     }
 }
