@@ -8,12 +8,11 @@ namespace WPFToDolist.VievModel
 
     public class TaskViewModel : ObservedObj
     {
-        private ToDoLogic.Model.TaskModel model;
+        private readonly ToDoLogic.Model.TaskModel model;
 
         #region properties
         public string Duty
         {
-
             get
             {
                 return model.Duty;
@@ -77,23 +76,12 @@ namespace WPFToDolist.VievModel
             model = new TaskModel(duty , creationDate , date , priority , isDone);
         }
 
-        public TaskViewModel(TaskViewModel taskModel)
-        {
-            TaskModel = taskModel;
-        }
-
         public TaskModel GetModel()
         {
             return model;
         }
 
-        public override string ToString()
-        {
-            return model.ToString();
-        }
-
         #region commands
-
         [JsonIgnore]
         private ICommand markAsDone;
         [JsonIgnore]
@@ -136,7 +124,6 @@ namespace WPFToDolist.VievModel
                 return markAsUnDone;
             }
         }
-
         public TaskViewModel TaskModel { get; }
         #endregion
     }

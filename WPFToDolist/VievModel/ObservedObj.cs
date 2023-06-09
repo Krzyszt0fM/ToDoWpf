@@ -1,15 +1,18 @@
 ﻿using System.ComponentModel;
 
-public abstract class ObservedObj : INotifyPropertyChanged
+namespace WPFToDolist.VievModel
 {
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected void OnPropertyChanged(params string[] propNames)
+    public abstract class ObservedObj : INotifyPropertyChanged
     {
-        if(PropertyChanged != null)
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(params string[] propNames)
         {
-            foreach(string propName in propNames)
-                PropertyChanged(this , new PropertyChangedEventArgs(propName));
+            if(PropertyChanged != null)
+            {
+                foreach(string propName in propNames)
+                    PropertyChanged(this , new PropertyChangedEventArgs(propName));
+            }
         }
     }
 }

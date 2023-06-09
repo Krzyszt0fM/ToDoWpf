@@ -1,36 +1,37 @@
 ﻿using System;
 using System.Windows.Input;
 
-
-
-public class ViewModelCommand : ICommand
+namespace WPFToDolist.VievModel
 {
-    //Fields
-    private Action<object?> _executeAction;
-    private Func<object? , bool> _canExcuteAction;
-
-    //Constuctors
-    public ViewModelCommand(Action<object?> executeAction , Func<object? , bool> _canExcuteAction = null)
+    public class ViewModelCommand : ICommand
     {
-        this._executeAction = executeAction;
-        this._canExcuteAction = _canExcuteAction;
+        //Fields
+        private readonly Action<object?> _executeAction;
+        private readonly Func<object? , bool> _canExcuteAction;
 
-    }
-    public bool CanExecute(object? parameter)
-    {
-        if(_canExcuteAction == null) return true;
-        else return _canExcuteAction(parameter);
-    }
+        //Constuctors
+        public ViewModelCommand(Action<object?> executeAction , Func<object? , bool> _canExcuteAction = null)
+        {
+            _executeAction = executeAction;
+            this._canExcuteAction = _canExcuteAction;
 
-    public void Execute(object? parameter)
-    {
-        _executeAction(parameter);
-    }
+        }
+        public bool CanExecute(object? parameter)
+        {
+            if(_canExcuteAction == null) return true;
+            else return _canExcuteAction(parameter);
+        }
 
-    //Events
-    public event EventHandler? CanExecuteChanged
-    {
-        add { CommandManager.RequerySuggested += value; }
-        remove { CommandManager.RequerySuggested -= value; }
+        public void Execute(object? parameter)
+        {
+            _executeAction(parameter);
+        }
+
+        //Events
+        public event EventHandler? CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
     }
 }

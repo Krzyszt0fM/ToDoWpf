@@ -12,7 +12,6 @@ namespace ToDoLogic.Model
             this.model = model;
         }
 
-        //crud
         public void AddTask(TaskModel model)
         {
             taskList.Add(model);

@@ -10,7 +10,6 @@ using ToDoLogic.Model;
 
 namespace WPFToDolist.VievModel
 {
-    //TA KLASA JEST DO OBLSUGI OGOLU ZADAN!!!!!
     public class SortOption
     {
         public string? Name { get; set; }
@@ -21,9 +20,6 @@ namespace WPFToDolist.VievModel
     {
         private Calendar model;
         public ObservableCollection<TaskViewModel> TasksList { get; set; } = new ObservableCollection<TaskViewModel>();
-
-
-
         private DateTime startDate = DateTime.Now;
         public DateTime NewDate
         {
@@ -38,7 +34,6 @@ namespace WPFToDolist.VievModel
             set { newDuty = value; OnPropertyChanged("NewDuty"); }
         }
 
-
         private PriorityLevel newPriority;
         public PriorityLevel NewPriority
         {
@@ -51,30 +46,14 @@ namespace WPFToDolist.VievModel
             TasksList = WpfFileWR.DeserializeObs<TaskViewModel>("tasks.json");
         }
 
-
-
         public TasksViewModels()
         {
             if(File.Exists("tasks.json"))
             {
                 Load();
             }
-            else
-            {
-                return;
-            }
         }
         #region do przemyslenia
-        private void CopyTasksFromModel()
-        {
-            TasksList.Clear();
-            TasksList.CollectionChanged -= ModelSync;
-            foreach(TaskModel taskModel in model)
-            {
-                TasksList.Add(new TaskViewModel(taskModel));
-            }
-            TasksList.CollectionChanged += ModelSync;
-        }
         public void ModelSync(object? sender , NotifyCollectionChangedEventArgs e)
         {
             switch(e.Action)
@@ -112,7 +91,6 @@ namespace WPFToDolist.VievModel
         }
 
         private ICommand? deleteTask;
-
         public ICommand DeleteTask
         {
             get
@@ -135,12 +113,7 @@ namespace WPFToDolist.VievModel
             }
         }
 
-
-
-
-
         private ICommand addTask;
-
         public ICommand AddTask
         {
             get
@@ -148,14 +121,11 @@ namespace WPFToDolist.VievModel
                 if(addTask == null) addTask = new ViewModelCommand(
                 o =>
                 {
-
-                    TaskViewModel duty = o as TaskViewModel;
-                    if(duty != null) TasksList.Add(duty);
-
+                    if(o is TaskViewModel duty) TasksList.Add(duty);
                 } ,
                 o =>
                 {
-                    return (o as TaskViewModel) != null;
+                    return o is TaskViewModel;
                 }
                 );
                 return addTask;
@@ -226,14 +196,11 @@ namespace WPFToDolist.VievModel
                                 }
                             }
                         } ,
-                        o => (o as string) != null
-                    );
+                        o => (o is string));
                 }
                 return sortCommand;
             }
-
         }
-
 
         private ICommand editTask;
         public ICommand EditTask
@@ -257,7 +224,6 @@ namespace WPFToDolist.VievModel
                       return taskIndex >= 0;
                   });
                 return editTask;
-
             }
         }
     }

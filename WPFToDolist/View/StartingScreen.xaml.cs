@@ -8,7 +8,7 @@ namespace WPFToDolist.View
     /// </summary>
     public partial class StartingScreen : Window
     {
-        private void btnStart_Click(object sender, RoutedEventArgs e)
+        private void btnStart_Click(object sender , RoutedEventArgs e)
         {
             // Navigate to MainWindow
             var MainWindow = new MainWindow();
@@ -17,18 +17,18 @@ namespace WPFToDolist.View
 
         }
 
-        private void Window_MouseDown(object sender, MouseEventArgs e)
+        private void Window_MouseDown(object sender , MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if(e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
 
-        private void btnMinimize_Click(object sender, RoutedEventArgs e)
+        private void btnMinimize_Click(object sender , RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
         }
 
-        private void btnClose_Click(object sender, RoutedEventArgs e)
+        private void btnClose_Click(object sender , RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
